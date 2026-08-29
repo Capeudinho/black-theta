@@ -1,23 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
 public class PlayerMovement : MonoBehaviour
 {
-	private static readonly int walkHash = Animator.StringToHash("walk");
+	private Transform parentTransform;
+	private PlayerState playerState;
 	private InputSystem_Actions inputSystemActions;
 	private InputAction moveAction;
-	public Rigidbody2D rigidbody2D;
-	public Animator animator;
+	private Rigidbody2D rigidbody2D;
 	public float speed = 8f;
 
 	void Awake()
 	{
 		inputSystemActions = new InputSystem_Actions();
 		moveAction = inputSystemActions.Player.Move;
-		rigidbody2D = GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
+		parentTransform = transform.parent.GetComponent<Transform>();
+		playerState = transform.parent.GetComponent<PlayerState>();
+		rigidbody2D = transform.parent.GetComponent<Rigidbody2D>();
 	}
 
 	void OnEnable()
@@ -32,14 +31,23 @@ public class PlayerMovement : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		Vector2 moveValue = moveAction.ReadValue<Vector2>();
-		Vector2 linearVelocity = moveValue*speed;
+		Vector2 direction = moveAction.ReadValue<Vector2>().normalized;
+		Vector2 linearVelocity = direction*speed;
 		rigidbody2D.linearVelocity = linearVelocity;
 
-		animator.SetBool(walkHash, linearVelocity.magnitude != 0f);
-		if ((linearVelocity.x > 0 && transform.localScale.x < 0) || (linearVelocity.x < 0 && transform.localScale.x > 0))
+		if (linearVelocity.magnitude != 0f)
 		{
-			transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+			playerState.ChangeState(PlayerStateType.Walk);
+
+			Vector3 localScale = parentTransform.localScale;
+			if ((linearVelocity.x > 0 && localScale.x < 0) || (linearVelocity.x < 0 && localScale.x > 0))
+			{
+				parentTransform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+			}
+		}
+		else
+		{
+			playerState.ChangeState(PlayerStateType.Idle);
 		}
 	}
 }
