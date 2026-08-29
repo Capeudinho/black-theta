@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PlayerHealth))]
 public class PlayerHealthDisplay : MonoBehaviour
@@ -28,11 +28,11 @@ public class PlayerHealthDisplay : MonoBehaviour
 			}
 			if (index < playerHealth.maximumHealth)
 			{
-				healthIcons[index].enabled = true;
+				healthIcons[index].SetEnabled(true);
 			}
 			else
 			{
-				healthIcons[index].enabled = false;
+				healthIcons[index].SetEnabled(false);
 			}
 		}
 	}
