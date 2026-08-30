@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 	private PlayerState playerState;
 	private InputSystem_Actions inputSystemActions;
 	private InputAction moveAction;
+	private InputAction attackAction;
 	private Rigidbody2D rigidbody2D;
 	public float speed = 8f;
 
@@ -14,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		inputSystemActions = new InputSystem_Actions();
 		moveAction = inputSystemActions.Player.Move;
+		attackAction = inputSystemActions.Player.Attack;
 		parentTransform = transform.parent.GetComponent<Transform>();
 		playerState = transform.parent.GetComponent<PlayerState>();
 		rigidbody2D = transform.parent.GetComponent<Rigidbody2D>();
@@ -29,13 +32,21 @@ public class PlayerMovement : MonoBehaviour
 		inputSystemActions.Player.Disable();
 	}
 
-	void FixedUpdate()
+    void Update()
+    {
+        if (attackAction.WasPressedThisFrame())
+		{
+			playerState.ChangeState(PlayerStateType.Attack);
+		}
+    }
+
+    void FixedUpdate()
 	{
 		Vector2 direction = moveAction.ReadValue<Vector2>().normalized;
 		Vector2 linearVelocity = direction*speed;
 		rigidbody2D.linearVelocity = linearVelocity;
 
-		if (linearVelocity.magnitude != 0f)
+		if (linearVelocity.magnitude != 0f && playerState.GetState() != PlayerStateType.Attack)
 		{
 			playerState.ChangeState(PlayerStateType.Walk);
 
@@ -49,5 +60,7 @@ public class PlayerMovement : MonoBehaviour
 		{
 			playerState.ChangeState(PlayerStateType.Idle);
 		}
+		
+		
 	}
 }
