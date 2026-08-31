@@ -4,7 +4,7 @@ public class PlayerAttack : MonoBehaviour
 {
 	public BoxCollider2D hitbox;
     private GameObject enemy;
-    public float knockback = 30f;
+    private float knockback = 30f;
 
     void Awake()
     {
@@ -16,7 +16,11 @@ public class PlayerAttack : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
 		{
 			enemy = collision.gameObject;
-            //knockback
+            //knockback na próx. linha
+			enemy.GetComponentInParent<Rigidbody2D>().AddForce((enemy.GetComponentInParent<Transform>().position - this.transform.position).normalized * knockback, ForceMode2D.Impulse);
+			Debug.Log($"Hit Enemy, {knockback} knck");
+			//dano
+			enemy.GetComponentInParent<EnemyHealth>().TakeDamage(1);
 		}
     }
 

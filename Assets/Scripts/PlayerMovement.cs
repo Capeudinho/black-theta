@@ -60,7 +60,5 @@ public class PlayerMovement : MonoBehaviour
 		{
 			playerState.ChangeState(PlayerStateType.Idle);
 		}
-		
-		
 	}
 }

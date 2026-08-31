@@ -52,12 +52,15 @@
     <Compile Include="Assets\Scripts\EnemyMovement.cs" />
     <Compile Include="Assets\Scripts\EnemyTouch.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
+    <Compile Include="Assets\Scripts\EnemyDetectAttack.cs" />
+    <Compile Include="Assets\Scripts\HitboxHandler.cs" />
     <Compile Include="Assets\Settings\InputSystem_Actions.cs" />
     <Compile Include="Assets\Scripts\EnemyState.cs" />
     <Compile Include="Assets\Scripts\PlayerAttack.cs" />
     <Compile Include="Assets\Scripts\EnemyAttack.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PlayerHealthDisplay.cs" />
+    <Compile Include="Assets\Scripts\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\PlayerState.cs" />
   </ItemGroup>
