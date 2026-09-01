@@ -17,7 +17,7 @@ public class EnemyMovement : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (playerTransform != null)
+		if (playerTransform != null && enemyState.enemyStateType != EnemyStateType.Attack)
 		{
 			enemyState.ChangeState(EnemyStateType.Walk);
 

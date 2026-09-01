@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 	private InputSystem_Actions inputSystemActions;
 	private InputAction moveAction;
 	private InputAction attackAction;
+	private InputAction shootAction;
 	private Rigidbody2D rigidbody2D;
 	public float speed = 8f;
 
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 		inputSystemActions = new InputSystem_Actions();
 		moveAction = inputSystemActions.Player.Move;
 		attackAction = inputSystemActions.Player.Attack;
+		shootAction = inputSystemActions.Player.Shoot;
 		parentTransform = transform.parent.GetComponent<Transform>();
 		playerState = transform.parent.GetComponent<PlayerState>();
 		rigidbody2D = transform.parent.GetComponent<Rigidbody2D>();
@@ -37,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
         if (attackAction.WasPressedThisFrame())
 		{
 			playerState.ChangeState(PlayerStateType.Attack);
+		} else if (shootAction.WasPressedThisFrame())
+		{
+			playerState.ChangeState(PlayerStateType.Shoot);
 		}
     }
 
@@ -60,7 +65,10 @@ public class PlayerMovement : MonoBehaviour
 		{
 			playerState.ChangeState(PlayerStateType.Idle);
 		}
-		
-		
+	}
+
+	public InputSystem_Actions GetInputActions()
+	{
+		return inputSystemActions;
 	}
 }
